@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+       <!-- Navigation Bar -->
+       <nav class="navbar">
+        <div class="logo"><a href="./index.html">Tiffin service center</a></div>
+        <ul class="nav-links">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="./menu.html">Menu</a></li>
+            
+            <li><a href="./contact.html">Contact</a></li>
+            <li><a href="./account.html">Account</a></li>
+            <li><a href="cart.html"><img src="./images/carticon1.webp" alt="Cart Icon" class="cart-icon"></a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="hamburger" id="hamburger">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" id="close-btn">&times;</span>
+        <a href="./index.html">Home</a>
+        <a href="./about.html">About</a>
+        <a href="./menu.html">Menu</a>
+        <a href="./contact.html">Contact</a>
+        <a href="./account.html">Account</a>
+        <a href="./cart.html">Cart</a>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+        <ul id="cart-items"></ul>
+
+        <!-- Total Price -->
+        <div class="cart-summary">
+            <h2>Total: $<span id="total-price">0.00</span></h2>
+        </div>
+
+        <!-- Order Now Button -->
+        <button class="order-now-btn" id="order-now-btn">Order Now</button>
+    </div>
+
+    <script>
+        const cartItems = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Display Cart Items and Calculate Total Price
+        function displayCart() {
+            cartItems.innerHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.add('cart-item');
+                li.innerHTML = `
+                    <div class="item-info">
+                        <img src="${item.image}" alt="${item.name}" class="cart-image">
+                        <div class="item-name">${item.name}</div>
+                    </div>
+                    <div class="item-price">$${item.price}</div>
+                    <button class="remove-btn" data-index="${index}">Remove</button>
+                `;
+
+                cartItems.appendChild(li);
+
+                // Add to total price
+                totalPrice += parseFloat(item.price);
+            });
+
+            // Update total price in the UI
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+
+            // Remove item from cart functionality
+            const removeBtns = document.querySelectorAll('.remove-btn');
+            removeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const index = this.getAttribute('data-index');
+                    removeFromCart(index);
+                });
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart(); // Re-render the cart after removal
+        }
+
+        // Order Now Button
+        const orderNowBtn = document.getElementById('order-now-btn');
+        orderNowBtn.addEventListener('click', function() {
+            if (cart.length > 0) {
+                alert('Order placed successfully!');
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+            } else {
+                alert('Your cart is empty!');
+            }
+        });
+
+        displayCart();
+    </script>
+    
+    <script>
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const popup = document.getElementById('popup');
+        const closeBtn = document.getElementById('close-btn');
+        const okBtn = document.getElementById('ok-btn');
+        const thankYou = document.getElementById('thank-you');
+
+        // Add product to cart in localStorage
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productName = this.getAttribute('data-name');
+                const productPrice = this.getAttribute('data-price');
+                const productImage = this.getAttribute('data-image');
+
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push({ name: productName, price: productPrice, image: productImage });
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                showPopup();
+            });
+        });
+
+        function showPopup() {
+            popup.style.display = 'block';
+        }
+
+        function hidePopup() {
+            popup.style.display = 'none';
+            showThankYou();
+        }
+
+        function showThankYou() {
+            thankYou.style.display = 'block';
+            thankYou.style.opacity = '1';
+            setTimeout(() => {
+                thankYou.style.opacity = '0';
+                setTimeout(() => {
+                    thankYou.style.display = 'none';
+                }, 2000);
+            }, 2000);
+        }
+
+        closeBtn.addEventListener('click', hidePopup);
+        okBtn.addEventListener('click', hidePopup);
+    </script>
+    <script>
+         const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        // const closeBtn = document.getElementById('close-btn');
+
+        // Show the sidebar when the hamburger icon is clicked
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Hide the sidebar when the close button is clicked
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+    </script>
+     <script>
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const btnText = document.querySelector('.btn-text');
+
+        addToCartBtn.addEventListener('click', () => {
+            // Add the 'done' class to the button to show 'Done' text
+            addToCartBtn.classList.add('done');
+
+            // After 2 seconds, remove the 'done' text and bring back 'Add to Cart'
+            setTimeout(() => {
+                addToCartBtn.classList.remove('done'); // Remove 'done' class
+                btnText.style.opacity = '1'; // Show 'Add to Cart' text again
+            }, 2000); // 2 seconds delay for 'Done' message display
+        });
+    </script>
+     <!-- <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.navbar ul');
+            menu.classList.toggle('show');
+        }
+    </script> -->
+   <!-- <script src="./script.js"></script> -->
+
+</body>
+</html>

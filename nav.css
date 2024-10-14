@@ -1,0 +1,148 @@
+ /* Navbar container */
+ .navbar {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+/* Logo */
+  .navbar .logo a {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    font-size: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+/* Navbar links */
+.navbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.navbar ul li {
+    position: relative;
+    margin-right: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+}
+
+.navbar ul li a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+/* Dropdown menu */
+.navbar .menu ul {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    top: 100%;
+    left: 0;
+    padding: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .menu:hover ul {
+    display: block;
+}
+
+.navbar .menu ul li a {
+    color: black;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.navbar .menu ul li a:hover {
+    background-color: #ddd;
+}
+
+/* Hamburger Icon for Mobile */
+.hamburger {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+.cart-icon{
+    width: 45px;
+    height: 45px;
+}
+ .sidebar .close-btn{
+    color: white;
+}
+
+ /* Dropdown Menu */
+ .navbar .menu ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    padding: 10px 0;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .menu ul li a {
+    color: black;
+    padding: 10px 20px;
+    white-space: nowrap;
+}
+
+.navbar .menu ul li a:hover {
+    background-color: #ddd;
+}
+ /* Show dropdown on hover */
+ .navbar .menu:hover ul {
+    display: block;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar ul {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color: #333;
+        height: 100%;
+        width: 200px;
+        padding-top: 60px;
+        text-align: left;
+    }
+
+    .navbar ul li {
+        margin: 20px 0;
+    }
+
+    .navbar .menu ul {
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .navbar ul li a {
+        padding: 10px 15px;
+    }
+
+    /* Show menu when active */
+    .navbar ul.show {
+        display: flex;
+    }
+
+    /* Show hamburger */
+    .hamburger {
+        display: block;
+    }
+}
